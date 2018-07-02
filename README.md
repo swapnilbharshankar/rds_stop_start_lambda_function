@@ -1,6 +1,6 @@
 # rds_stop_start_lambda_function
 
-create a role and attach following policy to the instance
+create a role "start-stop-rds" and attach following policy to the role
 
 ```
 {
@@ -25,5 +25,43 @@ create a role and attach following policy to the instance
         }
     ]
 }
+
+```
+
+RDS start lambda function
+
+```
+import botocore
+import boto3
+
+region = 'us-east-1'
+
+DBInstanceIdentifiers_var = [ 'db-rds', 'db-rds-1' ]
+
+def lambda_handler(event, context):
+  RDS = boto3.client('rds', region_name=region )
+  print("Version is {}".format(botocore.__version__))
+  for i in DBInstanceIdentifiers_var:
+    RDS.start_db_instance(DBInstanceIdentifier = i )
+    print 'started your db instance: ' + i
+
+```
+
+RDS stop lambda function
+
+```
+import botocore
+import boto3
+
+region = 'us-east-1'
+
+DBInstanceIdentifiers_var = [ 'db-rds', 'db-rds-1' ]
+
+def lambda_handler(event, context):
+  RDS = boto3.client('rds', region_name=region )
+  print("Version is {}".format(botocore.__version__))
+  for i in DBInstanceIdentifiers_var:
+    RDS.stop_db_instance(DBInstanceIdentifier = i )
+    print 'stopped your db instances: ' + i
 
 ```
